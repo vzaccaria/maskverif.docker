@@ -5,7 +5,6 @@ FROM ocaml/opam2:4.07
 
 ENV SCVHOME="/home/opam/scverif/"
 ENV MVHOME="/home/opam/maskverif"
-ENV MVBRANCH="SPINI"
 ENV PATH=${PATH}:${HOME}/.local/bin
 
 RUN mkdir -p ${HOME}/.local/bin \
@@ -17,17 +16,8 @@ RUN opam depext conf-m4 conf-gmp \
 RUN eval $(opam env)
 
 # get and build maskverif
-RUN eval $(opam env) \
-        && git clone https://gitlab.com/benjgregoire/maskverif.git -b ${MVBRANCH} ${MVHOME} \
-        && cd ${MVHOME} \
-        && make clean install
+RUN eval $(opam env) && git clone https://gitlab.com/benjgregoire/maskverif.git ${MVHOME} 
+WORKDIR ${MVHOME}
+RUN eval $(opam env) && make all
 
-# build local version of scverif
-COPY --chown=opam . ${SCVHOME}
-WORKDIR ${SCVHOME}
-RUN eval $(opam env) \
-        && make clean native
-
-# make it available
-ENV PATH="${SCVHOME}:${PATH}"
 
