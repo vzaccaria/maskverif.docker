@@ -1,0 +1,134 @@
+
+(*CMS scheme for d=4/s=5, with randoms saved in registers and 3 more randoms q_i*)
+
+proc CMS_d4:
+
+	inputs: a[0:4], b[0:4]
+	outputs: c[0:4]
+	randoms: r[0:27];
+
+	(*randoms*)
+	reg_r0 = ![r[0] + r[5]];
+	reg_r1 = ![r[1] + r[6]];
+	reg_r2 = ![r[2] + r[7]];
+	reg_r3 = ![r[3] + r[8]];
+	reg_r4 = ![r[4] + r[9]];
+
+	reg_r5 = ![r[5] + r[10]];
+	reg_r6 = ![r[6] + r[11]];
+	reg_r7 = ![r[7] + r[12]];
+	reg_r8 = ![r[8] + r[13]];
+	reg_r9 = ![r[9] + r[14]];
+
+	reg_r10 = ![r[10] + r[15]];
+	reg_r11 = ![r[11] + r[16]];
+	reg_r12 = ![r[12] + r[17]];
+	reg_r13 = ![r[13] + r[18]];
+	reg_r14 = ![r[14] + r[19]];
+
+	reg_r15 = ![r[15] + r[20]];
+	reg_r16 = ![r[16] + r[21]];
+	reg_r17 = ![r[17] + r[22]];
+	reg_r18 = ![r[18] + r[23]];
+	reg_r19 = ![r[19] + r[24]];
+
+	reg_r20 = ![r[20] + r[0]];
+	reg_r21 = ![r[21] + r[1]];
+	reg_r22 = ![r[22] + r[2]];
+	reg_r23 = ![r[23] + r[3]];
+	reg_r24 = ![r[24] + r[4]];
+
+	(*first cone, no-linear layer*)
+	a0b0 := a[0] * b[0];
+	a0b0 = ![a0b0 + reg_r0];
+	a0b1 := a[0] * b[1];
+	a0b1 = ![a0b1 + reg_r1];
+	a0b2 := a[0] * b[2];
+	a0b2 = ![a0b2 + reg_r2];
+	a0b3 := a[0] * b[3];
+	a0b3 = ![a0b3 + reg_r3];
+	a0b4 := a[0] * b[4];
+	a0b4 = ![a0b4 + reg_r4];
+
+	(*second cone, no-linear layer*)
+	a1b0 := a[1] * b[0];
+	a1b0 = ![a1b0 + reg_r5];
+	a1b1 := a[1] * b[1];
+	a1b1 = ![a1b1 + reg_r6];
+	a1b2 := a[1] * b[2];
+	a1b2 = ![a1b2 + reg_r7];
+	a1b3 := a[1] * b[3];
+	a1b3 = ![a1b3 + reg_r8];
+	a1b4 := a[1] * b[4];
+	a1b4 = ![a1b4 + reg_r9];
+
+	(*third cone, no-linear layer*)
+	a2b0 := a[2] * b[0];
+	a2b0 = ![a2b0 + reg_r10];
+	a2b1 := a[2] * b[1];
+	a2b1 = ![a2b1 + reg_r11];
+	a2b2 := a[2] * b[2];
+	a2b2 = ![a2b2 + reg_r12];
+	a2b3 := a[2] * b[3];
+	a2b3 = ![a2b3 + reg_r13];
+	a2b4 := a[2] * b[4];
+	a2b4 = ![a2b4 + reg_r14];
+
+	(*fourth cone, no-linear layer*)
+	a3b0 := a[3] * b[0];
+	a3b0 = ![a3b0 + reg_r15];
+	a3b1 := a[3] * b[1];
+	a3b1 = ![a3b1 + reg_r16];
+	a3b2 := a[3] * b[2];
+	a3b2 = ![a3b2 + reg_r17];
+	a3b3 := a[3] * b[3];
+	a3b3 = ![a3b3 + reg_r18];
+	a3b4 := a[3] * b[4];
+	a3b4 = ![a3b4 + reg_r19];
+
+	(*fifth cone, no-linear layer*)
+	a4b0 := a[4] * b[0];
+	a4b0 = ![a4b0 + reg_r20];
+	a4b1 := a[4] * b[1];
+	a4b1 = ![a4b1 + reg_r21];
+	a4b2 := a[4] * b[2];
+	a4b2 = ![a4b2 + reg_r22];
+	a4b3 := a[4] * b[3];
+	a4b3 = ![a4b3 + reg_r23];
+	a4b4 := a[4] * b[4];
+	a4b4 = ![a4b4 + reg_r24];
+
+	(*first cone, compression*)
+	c[0] := a0b0 + a0b1;
+	c[0] := c[0] + a0b2;
+	c[0] := c[0] + a0b3;
+	c[0] := c[0] + a0b4;
+
+	(*second cone, compression*)
+	c[1] := a1b0 + a1b1;
+	c[1] := c[1] + a1b2;
+	c[1] := c[1] + a1b3;
+	c[1] := c[1] + a1b4;
+
+	(*third cone, compression*)
+	c[2] := a2b0 + a2b1;
+	c[2] := c[2] + a2b2;
+	c[2] := c[2] + a2b3;
+	c[2] := c[2] + a2b4;
+
+	(*fourth cone, compression*)
+	c[3] := a3b0 + a3b1;
+	c[3] := c[3] + a3b2;
+	c[3] := c[3] + a3b3;
+	c[3] := c[3] + a3b4;
+
+	(*fifth cone, compression*)
+	c[4] := a4b0 + a4b1;
+	c[4] := c[4] + a4b2;
+	c[4] := c[4] + a4b3;
+	c[4] := c[4] + a4b4;
+
+end
+
+verbose 1
+SNI CMS_d4
