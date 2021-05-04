@@ -1,0 +1,135 @@
+
+(*Scheme for t=3/s=4, with 2*2^s*)
+
+proc iet_and_3:
+
+	inputs: a[0:3], b[0:3]
+	outputs: c[0:3]
+	randoms: r[0:31];
+
+	(*randoms*)
+	
+	r_00 := r[0] + r[1]; 
+	r_01 := r[1] + r[2];
+	r_02 := r[2] + r[3];
+	r_03 := r[3] + r[0];
+	
+	r_10 := r[4] + r[5]; 
+	r_11 := r[5] + r[6];
+	r_12 := r[6] + r[7];
+	r_13 := r[7] + r[4];
+	
+	r_20 := r[8] + r[9]; 
+	r_21 := r[9] + r[10];
+	r_22 := r[10] + r[11];
+	r_23 := r[11] + r[8];
+	
+	r_30 := r[12] + r[13]; 
+	r_31 := r[13] + r[14];
+	r_32 := r[14] + r[15];
+	r_33 := r[15] + r[12];
+
+	q_00 := r[16] + r[20];
+	q_01 := r[17] + r[21];
+	q_02 := r[18] + r[22];
+	q_03 := r[19] + r[23];
+	
+	q_10 := r[20] + r[24];
+	q_11 := r[21] + r[25];
+	q_12 := r[22] + r[26];
+	q_13 := r[23] + r[27];
+	
+	q_20 := r[24] + r[28];
+	q_21 := r[25] + r[29];
+	q_22 := r[26] + r[30];
+	q_23 := r[27] + r[31];
+	
+	q_30 := r[28] + r[16];
+	q_31 := r[29] + r[17];
+	q_32 := r[30] + r[18];
+	q_33 := r[31] + r[19];
+
+	reg_r0 = ![r_00 + q_00];
+	reg_r1 = ![r_01 + q_01];
+	reg_r2 = ![r_02 + q_02];
+	reg_r3 = ![r_03 + q_03];
+	
+	reg_r4 = ![r_10 + q_10];
+	reg_r5 = ![r_11 + q_11];
+	reg_r6 = ![r_12 + q_12];
+	reg_r7 = ![r_13 + q_13];
+	
+	reg_r8 = ![r_20 + q_20];
+	reg_r9 = ![r_21 + q_21];
+	reg_r10 = ![r_22 + q_22];
+	reg_r11 = ![r_23 + q_23];
+	
+	reg_r12 = ![r_30 + q_30];
+	reg_r13 = ![r_31 + q_31];
+	reg_r14 = ![r_32 + q_32];
+	reg_r15 = ![r_33 + q_33];
+	
+	(*first cone, no-linear layer*)
+	a0b0 := a[0] * b[0];
+	a0b0 = ![a0b0 + reg_r0];
+	a0b1 := a[0] * b[1];
+	a0b1 = ![a0b1 + reg_r1];
+	a0b2 := a[0] * b[2];
+	a0b2 = ![a0b2 + reg_r2];
+	a0b3 := a[0] * b[3];
+	a0b3 = ![a0b3 + reg_r3];
+
+	(*second cone, no-linear layer*)
+	a1b0 := a[1] * b[0];
+	a1b0 = ![a1b0 + reg_r4];
+	a1b1 := a[1] * b[1];
+	a1b1 = ![a1b1 + reg_r5];
+	a1b2 := a[1] * b[2];
+	a1b2 = ![a1b2 + reg_r6];
+	a1b3 := a[1] * b[3];
+	a1b3 = ![a1b3 + reg_r7];
+
+	(*third cone, no-linear layer*)
+	a2b0 := a[2] * b[0];
+	a2b0 = ![a2b0 + reg_r8];
+	a2b1 := a[2] * b[1];
+	a2b1 = ![a2b1 + reg_r9];
+	a2b2 := a[2] * b[2];
+	a2b2 = ![a2b2 + reg_r10];
+	a2b3 := a[2] * b[3];
+	a2b3 = ![a2b3 + reg_r11];
+
+	(*fourth cone, no-linear layer*)
+	a3b0 := a[3] * b[0];
+	a3b0 = ![a3b0 + reg_r12];
+	a3b1 := a[3] * b[1];
+	a3b1 = ![a3b1 + reg_r13];
+	a3b2 := a[3] * b[2];
+	a3b2 = ![a3b2 + reg_r14];
+	a3b3 := a[3] * b[3];
+	a3b3 = ![a3b3 + reg_r15];
+
+	(*first cone, compression*)
+	c[0] := a0b0 + a0b1;
+	c[0] := c[0] + a0b2;
+	c[0] := c[0] + a0b3;
+
+	(*second cone, compression*)
+	c[1] := a1b0 + a1b1;
+	c[1] := c[1] + a1b2;
+	c[1] := c[1] + a1b3;
+
+	(*third cone, compression*)
+	c[2] := a2b0 + a2b1;
+	c[2] := c[2] + a2b2;
+	c[2] := c[2] + a2b3;
+
+	(*fourth cone, compression*)
+	c[3] := a3b0 + a3b1;
+	c[3] := c[3] + a3b2;
+	c[3] := c[3] + a3b3;
+
+end
+
+verbose 1
+SNI iet_and_3
